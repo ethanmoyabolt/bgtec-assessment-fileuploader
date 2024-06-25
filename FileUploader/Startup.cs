@@ -26,6 +26,8 @@ namespace FileUploader
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
+            // Fileservice as well as the db context is initialised on start up.
             services.AddScoped<IFileService, FileService>();
             services.AddDbContext<FileContext>(options => options.UseSqlServer
             (Configuration.GetConnectionString("FileContext")));

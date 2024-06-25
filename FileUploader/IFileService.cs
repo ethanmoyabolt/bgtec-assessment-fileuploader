@@ -9,6 +9,7 @@ namespace FileUploader
 {
     public interface IFileService
     {
+        // Interface for FileService to allow for dependency injection.
         Task<BlobResponseDto> UploadAsync(IFormFile blob);
 
     }

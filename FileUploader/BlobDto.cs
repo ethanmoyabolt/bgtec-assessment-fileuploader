@@ -8,13 +8,15 @@ namespace FileUploader.Models
 {
     public class BlobDto
     {
-        public string? Uri { get; set; }
+        // Used to initialise an object that can be used to upload files to the blob storage,
 
-        public string? Name { get; set; }
+        public string Uri { get; set; }
 
-        public string? ContentType { get; set; }
+        public string Name { get; set; }
 
-        public Stream? Content { get; set; }
+        public string ContentType { get; set; }
+
+        public Stream Content { get; set; }
 
 
     }

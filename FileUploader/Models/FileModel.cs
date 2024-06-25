@@ -8,7 +8,7 @@ namespace FileUploader.Models
     public class FileModel
     {
 
-
+        // Creates an instance of the file to be added to the database.
         public FileModel(Guid fileId, string fileName, long size, string contentType, string fileExtension, DateTime time, string filePath)
         {
             FileId = fileId;
