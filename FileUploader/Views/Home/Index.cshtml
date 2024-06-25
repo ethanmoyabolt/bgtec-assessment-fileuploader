@@ -1,0 +1,20 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+@model FileUploader.Models.HomeViewModel
+
+@using FileUploader.Controllers;
+
+<div class="text-center">
+    <h1 class="display-4">Please choose a file to upload</h1>
+    <form method="post" asp-controller="Home" asp-action="Upload" enctype="multipart/form-data">
+        <div class="mb-3">
+            <input asp-for="File"/>
+        </div>
+
+        <div class="mb-3">
+            <button type="submit"> Upload </button>
+        </div>
+    </form>
+</div>
