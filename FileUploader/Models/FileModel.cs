@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace FileUploader.Models
 {
@@ -11,7 +9,7 @@ namespace FileUploader.Models
         // Creates an instance of the file to be added to the database.
         public FileModel(Guid fileId, string fileName, long size, string contentType, string fileExtension, DateTime time, string filePath)
         {
-            FileId = fileId;
+            FileID = fileId;
             FileName = fileName;
             Size = size;
             ContentType = contentType;
@@ -20,7 +18,16 @@ namespace FileUploader.Models
             FilePath = filePath;
         }
 
-        public Guid FileId { get; set; }
+
+        // Default
+
+        public FileModel()
+        {
+
+        }
+
+        [Key]
+        public Guid FileID { get; set; }
 
         public string FileName { get; set; }
 

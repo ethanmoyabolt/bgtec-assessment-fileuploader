@@ -28,8 +28,7 @@ namespace FileUploader.Controllers
         }
 
 
-        [HttpPost]
-        public IActionResult Upload()
+        public IActionResult Index()
         {
             // Passes in vewmodel in order to retrieve the file selected in the form of an IFormFile
             HomeViewModel model = new HomeViewModel();
@@ -37,33 +36,39 @@ namespace FileUploader.Controllers
         }
 
 
-        [HttpGet]
         public IActionResult ViewFiles()
         {
-            // Passes the data from the datbase to the viewbag so it can be displayed in the view
-            ViewBag.files = _context.Files.ToList();
+            // Passes the data from the database to the viewbag so it can be displayed in the view
+            ViewBag.files = _context.Files.ToList().OrderByDescending(x => x.Time);
             return View();
         }
 
-        [HttpPost]
         public async Task<IActionResult> Upload(HomeViewModel model)
         {
             // Calls the upload method from the file service
             var result = await _fileService.UploadAsync(model.File);
 
             // Created Unique ID in the form of a GUID for the new File
-            Guid FileId = Guid.NewGuid();
+            Guid fileId = Guid.NewGuid();
 
             // Gets extension of file from FileName
             string ext = Path.GetExtension(model.File.FileName);
+
+            // Convert from bytes to kilobytes
+            long size = model.File.Length / 1000;
+
+            // Get file location in Azure storage from Blob URI
+            string fileLocation = result.Blob.Uri.Replace("%", " ");
             
             // Checks there has been no error uploading the file then logs the newly uploaded file to the database;
             if (!result.Error)
             {
-                _context.Files.Add(new FileModel(FileId, model.File.FileName, model.File.Length, model.File.ContentType, ext, DateTime.Now, model.File.FileName));
+                _context.Files.Add(new FileModel(fileId, model.File.FileName, size, model.File.ContentType, ext, DateTime.Now, fileLocation));
             }
+
             _context.SaveChanges();
-            return Ok(result);
+
+            return View("Index");
         }
     }
 }
