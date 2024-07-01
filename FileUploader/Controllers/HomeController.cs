@@ -57,18 +57,22 @@ namespace FileUploader.Controllers
             // Convert from bytes to kilobytes
             long size = model.File.Length / 1000;
 
-            // Get file location in Azure storage from Blob URI
-            string fileLocation = result.Blob.Uri.Replace("%", " ");
             
             // Checks there has been no error uploading the file then logs the newly uploaded file to the database;
             if (!result.Error)
             {
+
+                // Get file location in Azure storage from Blob URI
+                string fileLocation = result.Blob.Uri.Replace("%", " ");
                 _context.Files.Add(new FileModel(fileId, model.File.FileName, size, model.File.ContentType, ext, DateTime.Now, fileLocation));
+                ViewBag.UploadStatus = result.Status;
+            }
+            else
+            {
+                ViewBag.UploadStatus = result.Status;
             }
 
-            _context.SaveChanges();
-
-            return View("Index");
+            return View("Index", model);
         }
     }
 }
